@@ -1,0 +1,7 @@
+test Mal sehen, ob es funktioniert! &
+test Das wäre ja schön... &
+/bin/ls -l &
+childs
+childs
+childs
+quit
