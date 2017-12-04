@@ -22,16 +22,23 @@ int main(int argc, char const *argv[]) {
     key++;
 
   //Gib den gefunden Schluessel aus
-  printf("Gefundener Schluesses: %d\n", key);
-  printf("shmid: %d\n", shmid);
+  printf("Gefundener Schluessel: %d\n", key);
+  //printf("shmid: %d\n", shmid);
 
   //Binde das ShMemSegment ein
   char* ptr = (char *) shmat(shmid, 0, 0);
 
-  //Setze Signalhandler fuer das Signal SIGUSR1
+  //Setze Signalhandler fuer das Signal SIGUSR1 & SIGQUIT
   signal(SIGUSR1, *sighandle);
+  signal(SIGQUIT, *sighandle);
 
-  while(1);
+
+  //Lies Zeile aus SharedMemory und gib sie aus
+  printf("Ausgabe des SharedMemory:\n");
+  while (1) {
+    pause();
+    printf("%s", ptr);
+  }
 
   return 0;
 }
@@ -40,11 +47,15 @@ int main(int argc, char const *argv[]) {
   Function to handle signals
 */
 void sighandle(int signr) {
-  printf("sighandle\n");
   switch (signr) {
     case SIGUSR1:
       printf("SIGUSR1\n");
-
+      return;
+    case SIGQUIT :
+      printf("Fertig!\n");
+      exit(EXIT_SUCCESS);
+    default:
+      exit(EXIT_FAILURE);
   }
 
   return;
