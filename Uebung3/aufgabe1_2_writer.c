@@ -29,7 +29,7 @@ int main(int argc, char const *argv[]) {
 
   //ShMemSegment
   int shmid;
-  if ( (shmid = shmget(shmkey, sizeof(char)*CHARS, 0)) == -1) {
+  if ( (shmid = shmget(shmkey, sizeof(char)*CHARS, 0777)) == -1) {
     printf("Fehler: Shared-Memory Segment existiert nicht.\n");
     printf("Starte zuerst den Reader Prozess!\n");
     return(EXIT_FAILURE);
