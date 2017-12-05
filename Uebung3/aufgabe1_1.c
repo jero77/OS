@@ -26,9 +26,9 @@ int main(int argc, char const *argv[]) {
       //Warte auf Parent (erster Integer ist dann 1)
       while (*pint != 1)
         ;
+        
       //Gib zweiten Integer aus
-      int read = pint[1];
-      printf("Child liest Wert: %d\n", read);
+      printf("Child liest Wert: %d\n", pint[1]);
       pint[0] = 0;  //erster Integer wird auf 0 gesetzt
       break;
 
