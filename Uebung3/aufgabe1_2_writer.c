@@ -36,8 +36,7 @@ int main(int argc, char const *argv[]) {
   }
 
   //Binde das Segment ein
-  char *ptr = shmat(shmid, 0, 0);
-
+  char *ptr = (char *) shmat(shmid, 0, 0);
 
   //Oeffne Datei zum Lesen
   FILE *fp;
@@ -50,28 +49,29 @@ int main(int argc, char const *argv[]) {
   //Schreibe die Datei zeilenweise in den SharedMemory
   char puffer[CHARS];
   int lines = 1;
-  while (fgets(puffer, 100, fp)) {
-    //printf("Zeile %d:|%s|\n",lines, puffer);
+  while (fgets(puffer, CHARS, fp)) {
 
     //Schreibe zeichenweise in den Speicher
     char c;
-    for (int i = 0; (c = puffer[i]) != '\0' && i < CHARS; i++) {
-      printf("%c", c);
-      ptr[0] = c;
+    for (int i = 0; i < CHARS; i++) {
+      c = puffer[i];
+      ptr[i] = c;
+      if (c == '\0')
+        break;
     }
+
 
     //Sende Signal SIGUSR1 an Leseprozess (readerpid)
     kill(readerpid, SIGUSR1);
     lines++;
-    printf("\nWriter: Pause machen!\n");
 
     //Warte auf Antwort - 1s
     //pause();
-    sleep(4);
+    sleep(1);
   }
 
-  //Beende den Leseprozess
-  kill(readerpid, SIGQUIT);
+  //Beende den Leseprozess (optional)
+  //kill(readerpid, SIGQUIT);
 
   return 0;
 }
