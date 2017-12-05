@@ -6,6 +6,7 @@
 #include <signal.h>
 
 #define CHARS 1024
+#define KEYSTART 15
 
 //Prototypes
 void sighandle(int signr);
@@ -16,26 +17,26 @@ void sighandle(int signr);
 int main(int argc, char const *argv[]) {
 
   //Erzeuge ShMemSegment mit dem Schluessel key
-  key_t key = 100;
+  key_t key = KEYSTART;
   int shmid;
   while ( (shmid = shmget(key, sizeof(char)*CHARS, IPC_CREAT | 0777)) == -1)
     key++;
 
   //Gib den gefunden Schluessel aus
   printf("Gefundener Schluessel: %d\n", key);
-  //printf("shmid: %d\n", shmid);
 
   //Binde das ShMemSegment ein
-  char* ptr = (char *) shmat(shmid, 0, 0);
+  char *ptr = (char *) shmat(shmid, 0, 0);
 
   //Setze Signalhandler fuer das Signal SIGUSR1 & SIGQUIT
   signal(SIGUSR1, *sighandle);
   signal(SIGQUIT, *sighandle);
 
 
-  //Lies Zeile aus SharedMemory und gib sie aus
-  printf("Ausgabe des SharedMemory:\n");
+  //Lies aus SharedMemory und gib das Gelesene aus
+  printf("Ausgabe des SharedMemory durch den Reader:\n");
   while (1) {
+    //Warte auf das Signal SIGUSR1
     pause();
     printf("%s", ptr);
   }
@@ -49,7 +50,6 @@ int main(int argc, char const *argv[]) {
 void sighandle(int signr) {
   switch (signr) {
     case SIGUSR1:
-      printf("SIGUSR1\n");
       return;
     case SIGQUIT :
       printf("Fertig!\n");
