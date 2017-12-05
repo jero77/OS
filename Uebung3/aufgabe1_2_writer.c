@@ -25,8 +25,6 @@ int main(int argc, char const *argv[]) {
   int shmkey = atoi(argv[2]);
   char *file = argv[3];
 
-  //printf("RPID:%d Key:%d File:%s\n", readerpid, shmkey, file);
-
   //ShMemSegment
   int shmid;
   if ( (shmid = shmget(shmkey, sizeof(char)*CHARS, 0777)) == -1) {
@@ -65,7 +63,7 @@ int main(int argc, char const *argv[]) {
     kill(readerpid, SIGUSR1);
     lines++;
 
-    //Warte auf Antwort - 1s
+    //Warte auf Antwort - Warte 1s
     //pause();
     sleep(1);
   }
