@@ -7,6 +7,9 @@
 
 #define CHARS 1024
 
+//Prototypes
+void sighandle(int signr);
+
 int main(int argc, char const *argv[]) {
 
   //Kommandozeilenparameter: PID Reader-Prozess, Schlüssel ShMemSegment, Dateiname
@@ -25,7 +28,16 @@ int main(int argc, char const *argv[]) {
   //printf("RPID:%d Key:%d File:%s\n", readerpid, shmkey, file);
 
   //ShMemSegment
-  int shmid = shmget(shkey, sizeof(char)*CHARS, )
+  int shmid;
+  if ( (shmid = shmget(shmkey, sizeof(char)*CHARS, 0777)) == -1) {
+    printf("Fehler: Shared-Memory Segment existiert nicht.\n");
+    printf("Starte zuerst den Reader Prozess!\n");
+    return(EXIT_FAILURE);
+  }
+
+  //Binde das Segment ein
+  char *ptr = shmat(shmid, 0, 0);
+
 
   //Oeffne Datei zum Lesen
   FILE *fp;
@@ -34,12 +46,32 @@ int main(int argc, char const *argv[]) {
     return(EXIT_FAILURE);
   }
 
-  char puffer[100];
+
+  //Schreibe die Datei zeilenweise in den SharedMemory
+  char puffer[CHARS];
   int lines = 1;
   while (fgets(puffer, 100, fp)) {
-    printf("Zeile %d:|%s|\n",lines, puffer);
-    lines++;
+    //printf("Zeile %d:|%s|\n",lines, puffer);
 
+    //Schreibe zeichenweise in den Speicher
+    char c;
+    for (int i = 0; (c = puffer[i]) != '\0' && i < CHARS; i++) {
+      printf("%c", c);
+      ptr[0] = c;
+    }
+
+    //Sende Signal SIGUSR1 an Leseprozess (readerpid)
+    kill(readerpid, SIGUSR1);
+    lines++;
+    printf("\nWriter: Pause machen!\n");
+
+    //Warte auf Antwort - 1s
+    //pause();
+    sleep(4);
   }
+
+  //Beende den Leseprozess
+  kill(readerpid, SIGQUIT);
+
   return 0;
 }
