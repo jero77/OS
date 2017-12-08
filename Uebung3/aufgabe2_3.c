@@ -20,17 +20,16 @@ int main(int argc, char const *argv[]) {
     exit(EXIT_FAILURE);
   }
 
-  //Öffne Pipe (S_IFIFO) mit Lese- (S_IRUSR) und Schreibrechten (S_IWUSR)
-  //Letztes Argument von mknod wird bei Pipe ignoriert also 0
-  if (mknod(argv[1], S_IRUSR | S_IWUSR | S_IFIFO , 0) == -1) {
-    printf("Fehler bei mknod(), konnte Pipe nicht öffnen\n");
-    exit(EXIT_FAILURE);
-  }
+
   //Filedeskriptor nur zum Lesen
   int fdr = open(argv[1], O_RDONLY);
-  char buffer[MAX];
-  read(fdr, buffer, MAX);
-  printf("Gelesen:%s\n", buffer);
+  char buffer;
+  printf("Jetzt kommt der Pipeinhalt:\n");
+  while (1) {
+    read(fdr, &buffer, MAX);
+    printf("%c", buffer);
+
+  }
 
   return 0;
 }
