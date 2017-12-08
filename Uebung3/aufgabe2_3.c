@@ -26,7 +26,7 @@ int main(int argc, char const *argv[]) {
   char buffer;
   printf("Jetzt kommt der Pipeinhalt:\n");
   while (1) {
-    read(fdr, &buffer, MAX);
+    read(fdr, &buffer, 1);
     printf("%c", buffer);
 
   }
