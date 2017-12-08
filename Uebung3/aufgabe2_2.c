@@ -69,7 +69,7 @@ int main(int argc, char const *argv[]) {
 
       //schreib den String in die pipe mit zwei writes
       write(fd[1], str, MAX / 2);
-      write(fd[1], str[MAX / 2 + 1], MAX / 2)
+      write(fd[1], &str[MAX / 2 + 1], MAX / 2);
       break;
   }
 
