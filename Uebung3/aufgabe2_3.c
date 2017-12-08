@@ -27,7 +27,7 @@ int main(int argc, char const *argv[]) {
   printf("Jetzt kommt der Pipeinhalt:\n");
   while (1) {
     read(fdr, &buffer, 1);
-    printf("%c", buffer);
+    printf("Gelesenes Zeichen:%c", buffer);
 
   }
 
