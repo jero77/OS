@@ -26,13 +26,8 @@ int main(int argc, char const *argv[]) {
   char buffer;
   printf("Jetzt kommt der Pipeinhalt:\n");
   while (1) {
-<<<<<<< HEAD
     if (read(fdr, &buffer, 1) == 1) //1 Byte gelesen
       printf("Gelesenes Zeichen:%c", buffer);
-=======
-    read(fdr, &buffer, 1);
-    printf("Gelesenes Zeichen:%c", buffer);
->>>>>>> c5220b0c0b4a4cf66384756293fe03c08773b813
 
   }
 
