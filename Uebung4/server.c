@@ -1,14 +1,30 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <sys/un.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <signal.h>
+
 
 #define MAX 80
 #define SOCK_PATH "/tmp/bamm"
 
 #define handle_error(msg) \
     do { perror(msg); exit(EXIT_FAILURE); } while(0);
+
+
+void sighandle(int signr) {
+  if (signr == SIGINT)  {
+    unlink(SOCK_PATH);
+    exit(EXIT_SUCCESS);
+  }
+  else
+    exit(EXIT_SUCCESS);
+
+}
+
+
 
 /*
   Serverprozess, der mit Clients von "client.c" kommuniziert.
