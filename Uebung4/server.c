@@ -8,14 +8,14 @@
 
 
 #define MAX 80
-#define SOCK_PATH "/tmp/bamm"
-
+#define SOCK_PATH "/tmp/os_ue03_jeromario.schaefer"
 #define handle_error(msg) \
     do { perror(msg); exit(EXIT_FAILURE); } while(0);
 
 
 void sighandle(int signr) {
   if (signr == SIGINT)  {
+    printf("Socket \"%s\" wird geschlossen! Ciao...\n", SOCK_PATH);
     unlink(SOCK_PATH);
     exit(EXIT_SUCCESS);
   }
@@ -37,7 +37,9 @@ int main(int argc, char const *argv[]) {
   struct sockaddr_un my_addr, peer_addr;
   socklen_t peer_addr_size;
 
-  //Erzeuge den Socket
+  signal(SIGINT, *sighandle);
+
+  //Erzeuge den lokalen Socket
   if ( (sfd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
     handle_error("socket");
 
@@ -57,9 +59,22 @@ int main(int argc, char const *argv[]) {
 
   //Akzeptiere eingehende Verbindungen
   peer_addr_size = sizeof(struct sockaddr_un);
-  cfd = accept(sfd, (struct sockaddr *) &peer_addr, &peer_addr_size);
-  if (cfd == -1)
-    handle_error("accept");
+  while (1) {
+
+    //cfd = ClientFileDeskriptor, genutzt zur Kommunikation
+    cfd = accept(sfd, (struct sockaddr *) &peer_addr, &peer_addr_size);
+    //Fehler bei eingehender Verbindung -> continue zum ignorieren
+    if (cfd == -1) {
+      perror("accept");
+      continue;
+    }
+
+    //Behandle die eingegangene Verbindung
+    //Lies den geschickten String mit dem FD und gib ihn aus
+    char readStr[MAX];
+    read(cfd, readStr, MAX);
+    printf("%s\n",readStr);
+  }
 
   return 0;
 }
