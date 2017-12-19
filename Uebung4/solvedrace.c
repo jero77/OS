@@ -20,21 +20,31 @@ int turn;
   Threadfunktion, erhöhe 'in' (glob. Variable) 'count_max' mal um 1.
 */
 void *threadfunc(void* threadid) {
+  //lokale Variable für den Zugriff auf die globale Variable
   unsigned long int next_free_slot;
+  //ThreadID (0 oder 1)
   long id = (long) threadid;
 
   for (unsigned long int j = 0; j < count_max; j++) {
     flag[id] = true;
+    //nächste Zeile verhindert Veränderung der Reihenfolge (Optimierung)
+    asm volatile("mfence" ::: "memory");
     turn = 1 - id;
-    while(flag[1 - id] == true && turn == 1 - id)
+    asm volatile("mfence" ::: "memory");
+
+
+    while(flag[1 - id] == true && turn == (1 - id) )
       ;  //BusyWaiting
+    asm volatile("mfence" ::: "memory");
 
     //kritischer Bereich
     next_free_slot = in;
     next_free_slot++;
     in = next_free_slot;
+    //Ende kritischer Bereich
 
     flag[id] = false;
+    asm volatile("mfence" ::: "memory");
   }
 
 
