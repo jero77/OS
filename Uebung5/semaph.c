@@ -17,7 +17,7 @@ volatile unsigned long int count_max;
   Threadfunktion, erhöhe 'in' (glob. Variable) 'count_max' mal um 1.
   Threadsynchronisation erfolgt durch die Semaphore 'mutex'.
 */
-void *threadfunc(void* ignoreMe) {
+void *threadfunc(void* id) {
   unsigned long int next_free_slot;
 
 
@@ -26,6 +26,7 @@ void *threadfunc(void* ignoreMe) {
     sem_wait(&mutex);
 
     //Kritischer Abschnitt
+    printf("Kritischer Abschnitt, ThreadID=%ld\n", (long) id );
     next_free_slot = in;
     next_free_slot++;
     in = next_free_slot;
@@ -65,12 +66,12 @@ int main(int argc, char const *argv[]) {
 
   //Starte 4 Threads
   pthread_t thr[4];
-  for (int i = 0; i < 4; i++)
-    pthread_create(&thr[i], NULL, threadfunc, NULL);
+  for (long i = 0; i < 4; i++)
+    pthread_create(&thr[i], NULL, threadfunc, (void *)i);
 
 
   //Warte auf die Threads
-  for (int i = 0; i < 4; i++)
+  for (long i = 0; i < 4; i++)
     pthread_join(thr[i], NULL);
 
 
