@@ -20,6 +20,7 @@ public class MyThread extends Thread {
   //Threadfunktion
   public void run() {
 
+    //Erhöhe in count_max mal um eins
     for (long i = 0; i < count_max; i++ )
       counter.increment();
 

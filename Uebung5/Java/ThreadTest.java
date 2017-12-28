@@ -5,18 +5,24 @@
 */
 public class ThreadTest {
 
+
+  //globale Variable
+  protected static long in = 0;
+
+
   public static void main(String[] args) {
 
     //Anzahl Threads
     int num = 4;
 
+    //Lies count_max als Kommandozeilenparameter
     if (args.length != 1) {
       System.out.println("Erwartet wird eine pos. ganze Zahl als Komm.Param.");
       System.exit(-1);
     }
-
     long max = Long.parseLong(args[0]);
 
+    //Erzeuge und starte die Threads mit dem gemeinsamen Counterobjekt
     MyThread[] thread = new MyThread[num];
     Counter count = new Counter();
     for (int i = 0; i < num; i++) {
@@ -25,6 +31,7 @@ public class ThreadTest {
       System.out.println("Thread "+i+" gestartet");
     }
 
+    //Warte auf alle Threads
     for (int i = 0; i < num; i++) {
       try {
         thread[i].join();
@@ -33,6 +40,7 @@ public class ThreadTest {
       }
     }
 
+    //Resultat
     System.out.println("Ergebnis in="+count.print());
   }
 

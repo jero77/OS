@@ -4,17 +4,16 @@
 */
 public class Counter {
 
-  //globale variable
-  private static long in = 0;
-
+  //erhöht die globale variable in um eins, monitorsynchronisiert
   public synchronized void increment() {
-    long local = in;
+    long local = ThreadTest.in;
     local++;
-    in = local;
+    ThreadTest.in = local;
   }
 
+  //returned den aktuelle wert von in als string
   public String print() {
-    return ""+in;
+    return ""+ThreadTest.in;
   }
 
 }
