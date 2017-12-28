@@ -5,8 +5,9 @@
 #include <semaphore.h>
 
 
-//Sematphore zur Threadsynchronisation
-sem_t mutex;
+//Sematphore zur Threadsynchronisation (Bedingungssychro.)
+//erst Thread 0, dann Thread 1, dann 2, dann 3, dann wieder 0, ...
+sem_t thrsem[3];
 
 
 //gemeinsame globale Variable
@@ -23,7 +24,8 @@ void *threadfunc(void* id) {
 
   for (unsigned long int j = 0; j < count_max; j++) {
     //Semaphore Operation 'wait'
-    sem_wait(&mutex);
+    for (long i = 0; i <= (long) id; i++)
+      sem_wait(&thrsem[i]);
 
     //Kritischer Abschnitt
     printf("Kritischer Abschnitt, ThreadID=%ld\n", (long) id );
@@ -33,7 +35,8 @@ void *threadfunc(void* id) {
     //Kritischer Abschnitt Ende
 
     //Semaphore Operation 'signal'
-    sem_post(&mutex);
+    for (long i = id; i >= 0; i++)
+      sem_post(&thrsem[i]);
   }
 
 
@@ -60,9 +63,11 @@ int main(int argc, char const *argv[]) {
   count_max = strtoul(argv[1], NULL, 10);
 
 
-  //Initialisiere die Semaphore 'mutex', Argumente: Zeiger auf Semaphore,
+  //Initialisiere die Semaphoren , Argumente: Zeiger auf Semaphore,
   // shared=0 (nur im Prozess sichtbar), initvalue=1 (1 Proz. im krit. Ab.)
-  sem_init(&mutex, 0, 1);   //initvalue=n -> n Proz. im krit. Abschnitt
+  sem_init(&thrsem[0], 0, 1);
+  sem_init(&thrsem[1], 0, 1);
+  sem_init(&thrsem[2], 0, 1);
 
   //Starte 4 Threads
   pthread_t thr[4];
@@ -76,7 +81,9 @@ int main(int argc, char const *argv[]) {
 
 
   //Ressourcen freigeben
-  sem_destroy(&mutex);
+  sem_destroy(&thrsem[0]);
+  sem_destroy(&thrsem[1]);
+  sem_destroy(&thrsem[2]);
 
   //Output in
   printf("Globale Variable in=%lu\n", in);
