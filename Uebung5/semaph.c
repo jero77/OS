@@ -26,7 +26,7 @@ void *threadfunc(void* id) {
     sem_wait(&mutex);
 
     //Kritischer Abschnitt
-    printf("Kritischer Abschnitt, ThreadID=%ld\n", (long) id );
+    printf("%ld", (long) id );
     next_free_slot = in;
     next_free_slot++;
     in = next_free_slot;
@@ -79,6 +79,6 @@ int main(int argc, char const *argv[]) {
   sem_destroy(&mutex);
 
   //Output in
-  printf("Globale Variable in=%lu\n", in);
+  printf("\nGlobale Variable in=%lu\n", in);
   return 0;
 }

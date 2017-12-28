@@ -35,7 +35,7 @@ void *threadfunc(void* id) {
     //Kritischer Abschnitt Ende
 
     //Semaphore Operation 'signal'
-    for (long i = id; i >= 0; i++)
+    for (long i = (long) id; i >= 0; i++)
       sem_post(&thrsem[i]);
   }
 
