@@ -14,6 +14,9 @@ public class SleepingOfficial {
 
     while (true) {
       Request r = produceRequest();
+      //Sleep a random amount of time 1s - 5s
+      int s = (int) (Math.random() * 5) + 1;
+      Thread.sleep(1000)
       Applicant app = new Applicant(r, monitor);
       app.start();
     }
