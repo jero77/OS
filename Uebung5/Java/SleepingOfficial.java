@@ -17,7 +17,7 @@ public class SleepingOfficial {
       //Sleep a random amount of time 1s - 5s
       int s = (int) (Math.random() * 5) + 1;
       System.out.println(s);
-      Thread.sleep(s);
+      Thread.sleep(s * 1000);
       Applicant app = new Applicant(r, monitor);
       app.start();
     }
