@@ -93,7 +93,7 @@ public class SleepingOfficial {
 
   //Main function
   public static void main(String[] args) {
-    SleepingOfficial sleep = new SleepingOfficial();
+    static SleepingOfficial sleep = new SleepingOfficial();
     monitor = sleep.new AuthorityMonitor();
     off = sleep.new Official();
     off.start();
