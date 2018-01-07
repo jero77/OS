@@ -3,7 +3,7 @@ public class SleepingOfficial {
 
   //Produce a new Request
   public static Request produceRequest() {
-    return new Request((int)Math.random() * Integer.MAX_VALUE);
+    return new Request((int) (Math.random() * Integer.MAX_VALUE));
   }
 
   //Main function
