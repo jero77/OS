@@ -84,20 +84,20 @@ public class SleepingOfficial {
   }
 
   //Produce a new Request
-  private static Request produceRequest() {
-    return new Request( (int) Math.random() * Integer.MAX_VALUE);
+  private Request produceRequest() {
+    return monitor.new Request( (int) Math.random() * Integer.MAX_VALUE);
   }
 
 
 
   //Main function
   public static void main(String[] args) {
-    SleepingOfficial.Official off = monitor.new Official();
+    SleepingOfficial.Official off = SleepingOfficial.new Official();
     off.start();
 
     while (true) {
-      Request r = produceRequest();
-      SleepingOfficial.Applicant app = monitor.new Applicant(r);
+      Request r = this.produceRequest();
+      SleepingOfficial.Applicant app = SleepingOfficial.new Applicant(r);
       app.start();
     }
 
