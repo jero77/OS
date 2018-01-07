@@ -41,7 +41,7 @@ void* P(void* id) {
 int main(int argc, char const *argv[]) {
 
   //Initialisiere "Tisch" (Sticks) & Semaphoren
-  N = 2;
+  N = 5;
   long i;
   stick = (int *) malloc(sizeof(int) * N);
   semstick = (sem_t *) malloc(sizeof(sem_t) * N);
