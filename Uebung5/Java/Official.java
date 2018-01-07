@@ -22,7 +22,7 @@ public class Official extends Thread {
   public void run() {
     while(true) {
       r = monitor.check();
-      SleepingOfficial.process(r);
+      process(r);
     }
   }
 }
