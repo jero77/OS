@@ -20,7 +20,7 @@ public class AuthorityMonitor {
   }
 
   //Applicant visits authority
-  public synchronized void visit(Applicant a) {
+  public void visit(Applicant a) {
     System.out.println("Visit()...");
     //Official sleeping?
     if (r == null) {
