@@ -2,6 +2,9 @@ import java.util.*;
 
 public class SleepingOfficial {
 
+  AuthorityMonitor monitor = new AuthorityMonitor();
+
+
   //Inner class for monitor
   class AuthorityMonitor {
 
@@ -74,22 +77,21 @@ public class SleepingOfficial {
 
 
   //Process a request
-  private void process(Request r) {
+  private static void process(Request r) {
     //read the int from r
     int i = r.stuff;
     System.out.println("Processed request with int stuff="+i);
   }
 
   //Produce a new Request
-  private Request produceRequest() {
-    return new Request(Math.random() * Integer.MAX_VALUE);
+  private static Request produceRequest() {
+    return new Request( (int) Math.random() * Integer.MAX_VALUE);
   }
 
 
 
   //Main function
   public static void main(String[] args) {
-    AuthorityMonitor monitor = new AuthorityMonitor();
     Official off = new Official();
     off.start();
 
