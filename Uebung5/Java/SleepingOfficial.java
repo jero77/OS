@@ -71,7 +71,7 @@ public class SleepingOfficial {
       return r;
     }
     public void run() {
-      monitor.visit(r);
+      monitor.visit(this);
     }
   }
 
@@ -92,11 +92,13 @@ public class SleepingOfficial {
 
   //Main function
   public static void main(String[] args) {
-    Official off = new Official();
+    SleepingOfficial.Official off = monitor.new Official();
     off.start();
 
     while (true) {
       Request r = produceRequest();
+      SleepingOfficial.Applicant app = monitor.new Applicant(r);
+      app.start();
     }
 
   }
