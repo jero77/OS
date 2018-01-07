@@ -2,11 +2,12 @@ import java.util.*;
 
 public class SleepingOfficial {
 
-  AuthorityMonitor monitor = new AuthorityMonitor();
-
+  AuthorityMonitor monitor;
+  Official off;
+  Applicant app;
 
   //Inner class for monitor
-  class AuthorityMonitor {
+  static class AuthorityMonitor {
 
     //Queue for applicants (Waiting room)
     private LinkedList<Applicant> queue = new LinkedList<Applicant>();
@@ -92,12 +93,13 @@ public class SleepingOfficial {
 
   //Main function
   public static void main(String[] args) {
-    SleepingOfficial.Official off = SleepingOfficial.new Official();
+    monitor = this.new AuthorityMonitor();
+    off = this.new Official();
     off.start();
 
     while (true) {
       Request r = this.produceRequest();
-      SleepingOfficial.Applicant app = SleepingOfficial.new Applicant(r);
+      app = this.new Applicant(r);
       app.start();
     }
 
