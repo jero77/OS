@@ -1,5 +1,5 @@
 import java.util.LinkedList;
-public synchronized class AuthorityMonitor {
+public class AuthorityMonitor {
 
   //Queue for applicants (Waiting room)
   private LinkedList<Applicant> queue = new LinkedList<Applicant>();
@@ -9,7 +9,7 @@ public synchronized class AuthorityMonitor {
   private Request r = null;
 
   //Wait for a request
-  Request check() {
+  public synchronized Request check() {
     while (r == null) {   //Sleep ("Busy" waiting)
       //Check for applicants
       if (queue.size() > 0)
@@ -19,7 +19,7 @@ public synchronized class AuthorityMonitor {
   }
 
   //Applicant visits authority
-  void visit(Applicant a) {
+  public synchronized void visit(Applicant a) {
     //Official sleeping?
     if (r == null) {
       //enter official's room, drop request and leave
