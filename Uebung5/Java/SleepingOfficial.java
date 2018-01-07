@@ -7,7 +7,7 @@ public class SleepingOfficial {
   }
 
   //Main function
-  public static void main(String[] args) {
+  public static void main(String[] args) throws InterruptedException {
     AuthorityMonitor monitor = new AuthorityMonitor();
     Official off = new Official(monitor);
     off.start();
