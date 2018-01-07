@@ -1,5 +1,5 @@
 import java.util.LinkedList;
-public class AuthorityMonitor {
+public synchronized class AuthorityMonitor {
 
   //Queue for applicants (Waiting room)
   private LinkedList<Applicant> queue = new LinkedList<Applicant>();
