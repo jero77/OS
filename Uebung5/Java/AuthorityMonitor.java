@@ -9,7 +9,7 @@ public class AuthorityMonitor {
   private Request r = null;
 
   //Wait for a request
-  public synchronized Request check() {
+  public Request check() {
     System.out.println("Check()...");
     while (r == null) {
       //Check for applicants
