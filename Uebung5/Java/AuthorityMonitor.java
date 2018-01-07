@@ -11,7 +11,7 @@ public class AuthorityMonitor {
   //Wait for a request
   public synchronized Request check() {
     System.out.println("Check()...");
-    while (r == null) {   //Sleep ("Busy" waiting)
+    while (r == null) {
       //Check for applicants
       if (queue.size() > 0)
         return queue.remove().dropReq();
