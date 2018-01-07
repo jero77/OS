@@ -27,7 +27,7 @@ void* P(void* id) {
     sem_wait(&semstick[right]);
 
     //Iss was ;)
-    printf("Philosoph %d isst jetzt (nom nom nom ...)\n", i);
+    printf("%d\n", i);
 
     //"Lege Sticks zurück"
     sem_post(&semstick[right]);
