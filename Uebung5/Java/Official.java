@@ -21,7 +21,9 @@ public class Official extends Thread {
 
   public void run() {
     while(true) {
+      System.out.println("Checking for request...");
       r = monitor.check();
+      System.out.println("Processing request...");
       process();
     }
   }

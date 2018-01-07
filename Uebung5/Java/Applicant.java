@@ -14,6 +14,7 @@ public class Applicant extends Thread {
   }
 
   public void run() {
+    System.out.println("Visiting monitor...");
     monitor.visit(this);
   }
 }

@@ -10,6 +10,7 @@ public class AuthorityMonitor {
 
   //Wait for a request
   public synchronized Request check() {
+    System.out.println("Check()...");
     while (r == null) {   //Sleep ("Busy" waiting)
       //Check for applicants
       if (queue.size() > 0)
@@ -20,14 +21,19 @@ public class AuthorityMonitor {
 
   //Applicant visits authority
   public synchronized void visit(Applicant a) {
+    System.out.println("Visit()...");
     //Official sleeping?
     if (r == null) {
       //enter official's room, drop request and leave
       r = a.dropReq();
+      System.out.println("Dropped Request!");
     } else {
       //official is working rn
-      if (queue.size() < maxSize)   //== waiting room not full
+      if (queue.size() < maxSize) {  //== waiting room not full
         queue.add(a);
+        System.out.println("Waiting in the waiting room...");
+      } else
+        System.out.println("Leaving (waiting room full)!");
     }
   }
 }
