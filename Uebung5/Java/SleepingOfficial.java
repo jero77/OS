@@ -9,7 +9,7 @@ public class SleepingOfficial {
   class AuthorityMonitor {
 
     //Queue for applicants (Waiting room)
-    private List<Applicant> queue = new LinkedList<Applicant>();
+    private LinkedList<Applicant> queue = new LinkedList<Applicant>();
     private int maxSize = 10;
 
     //Request for the official
