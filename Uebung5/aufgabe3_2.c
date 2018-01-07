@@ -12,7 +12,7 @@ int *stick;                     //stick[i]<0 = stick auf tisch
 
 
 //Semaphoren für die Sticks
-sem_t semstick*;
+sem_t *semstick;
 
 void* P(void* id) {
   int i = (long) id;
