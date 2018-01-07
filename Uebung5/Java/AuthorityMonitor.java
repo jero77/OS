@@ -15,6 +15,7 @@ public class AuthorityMonitor {
       if (queue.size() > 0)
         return queue.remove().dropReq();
     }
+    return r;
   }
 
   //Applicant visits authority
