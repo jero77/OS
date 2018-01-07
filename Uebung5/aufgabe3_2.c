@@ -2,11 +2,17 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <semaphore.h>
+
 
 //Gemeinsam genutzte Variablen
 int N;                          //Anz. Philosophen/Sticks
 int *stick;                     //stick[i]<0 = stick auf tisch
                                 //stick[i]=j = philosoph j hat stick i
+
+
+//Semaphoren für die Sticks
+sem_t semstick*;
 
 void* P(void* id) {
   int i = (long) id;
@@ -14,17 +20,18 @@ void* P(void* id) {
   int right = i;
 
   while (1) {
-    while (stick[left] >= 0) ; //warte auf linken stick
-      stick[left] = i;
-    while (stick[right] >= 0) ;//warte auf rechten stick
-      stick[right] = i;
+
+    //Linker Stick
+    sem_wait(&semstick[left]);
+    //Rechter Stick
+    sem_wait(&semstick[right]);
 
     //Iss was ;)
     printf("Philosoph %d isst jetzt (nom nom nom ...)\n", i);
 
-    //Lege Sticks zurück
-    stick[right] = -1;
-    stick[left] = -1;
+    //"Lege Sticks zurück"
+    sem_post(&semstick[right]);
+    sem_post(&semstick[left]);
 
   }
 }
@@ -33,21 +40,25 @@ void* P(void* id) {
 //Mainfunktion
 int main(int argc, char const *argv[]) {
 
-  //Initialisiere "Tisch" (Sticks)
+  //Initialisiere "Tisch" (Sticks) & Semaphoren
   N = 2;
+  long i;
   stick = (int *) malloc(sizeof(int) * N);
-  for (long i = 0; i < N; i++)
+  semstick = (sem_t *) malloc(sizeof(sem_t) * N);
+  for (i = 0; i < N; i++) {
     stick[i] = -1;
-
+    sem_init(&semstick[i], 0, 1);
+  }
 
   //Erzeuge N Threads (Philosophen)
   pthread_t thread[N];
-  for (long i = 0; i < N; i++)
+  for (i = 0; i < N; i++)
     pthread_create(&thread[i], NULL, P, (void *)i);
 
 
   //Warte auf einen der Threads (enden nie)
   pthread_join(thread[0], NULL);
+
 
   return 0;
 }
