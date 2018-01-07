@@ -2,9 +2,9 @@ import java.util.*;
 
 public class SleepingOfficial {
 
-  AuthorityMonitor monitor;
-  Official off;
-  Applicant app;
+  static AuthorityMonitor monitor;
+  static Official off;
+  static Applicant app;
 
   //Inner class for monitor
   static class AuthorityMonitor {
