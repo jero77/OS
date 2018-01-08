@@ -54,3 +54,6 @@ dkms.conf
 #Other stuff
 Uebung1/Kernel*
 *.pdf
+
+#Java
+*.class
