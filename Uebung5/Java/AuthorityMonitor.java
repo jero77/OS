@@ -9,7 +9,7 @@ public class AuthorityMonitor {
   private Request r = null;
 
   //Wait for a request
-  public Request check() {
+  public synchronized Request check() {
     System.out.println("Check()...");
     while (r == null) {
       //Check for applicants
@@ -20,7 +20,7 @@ public class AuthorityMonitor {
   }
 
   //Applicant visits authority
-  public void visit(Applicant a) {
+  public synchronized void visit(Applicant a) {
     System.out.println("Visit()...");
     //Official sleeping?
     if (r == null) {
