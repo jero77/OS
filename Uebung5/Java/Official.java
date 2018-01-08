@@ -21,10 +21,16 @@ public class Official extends Thread {
 
   public void run() {
     while(true) {
-      System.out.println("Checking for request...");
+
       r = monitor.check();
-      System.out.println("Processing request...");
-      process();
+
+      if (r != null) {
+        process();
+      } else {
+        System.out.println("ERROR: checked null");
+        System.exit(-1);
+      }
+      
     }
   }
 }

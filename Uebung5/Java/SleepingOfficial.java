@@ -3,7 +3,7 @@ public class SleepingOfficial {
 
   //Produce a new Request
   public static Request produceRequest() {
-    return new Request((int) (Math.random() * Integer.MAX_VALUE));
+    return new Request((int) (Math.random() * 10));
   }
 
   //Main function
@@ -12,15 +12,23 @@ public class SleepingOfficial {
     Official off = new Official(monitor);
     off.start();
 
+    long startingTime = System.currentTimeMillis();
+
     while (true) {
       Request r = produceRequest();
-      //Sleep a random amount of time 1s - 5s
-      int s = (int) (Math.random() * 5) + 1;
-      //System.out.println(s);
-      Applicant app = new Applicant(r, monitor);
-      Thread.sleep(s * 1000);
-      app.start();
+
+      if (System.currentTimeMillis() - startingTime <= 2000 ) {
+        Applicant app = new Applicant(r, monitor);
+        Thread.sleep(0);
+        app.start();
+      }
+      else if (System.currentTimeMillis() - startingTime >= 4000) {
+        startingTime = System.currentTimeMillis();
+      }
+
     }
+
   }
+
 
 }
