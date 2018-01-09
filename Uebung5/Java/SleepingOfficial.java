@@ -1,3 +1,4 @@
+package aufgabe4;
 
 public class SleepingOfficial {
 

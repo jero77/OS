@@ -4,10 +4,12 @@
 #include <pthread.h>
 #include <semaphore.h>
 
+#define NUMTHR 4
+
 
 //Sematphore zur Threadsynchronisation (Bedingungssychro.)
 //erst Thread 0, dann Thread 1, dann 2, dann 3, dann wieder 0, ...
-sem_t thrsem[3];
+sem_t thrsem[NUMTHR];
 
 
 //gemeinsame globale Variable
@@ -20,25 +22,26 @@ volatile unsigned long int count_max;
 */
 void *threadfunc(void* id) {
   unsigned long int next_free_slot;
-
+  long i = (long) id;
 
   for (unsigned long int j = 0; j < count_max; j++) {
     //Semaphore Operation 'wait'
-    for (long i = 0; i <= (long) id; i++)
-      sem_wait(&thrsem[i]);
+    //Thread i macht wait auf Semaphore[i] -> ist Thread i dran?
+    //printf("Thread %ld wait auf sem%ld\n", i, i);
+    sem_wait(&thrsem[i]);
 
     //Kritischer Abschnitt
-    printf("Kritischer Abschnitt, ThreadID=%ld\n", (long) id );
+    printf("Kritischer Abschnitt, ThreadID=%ld\n", i );
     next_free_slot = in;
     next_free_slot++;
     in = next_free_slot;
     //Kritischer Abschnitt Ende
 
     //Semaphore Operation 'signal'
-    for (long i = (long) id; i >= 0; i++)
-      sem_post(&thrsem[i]);
+    //Thread i signal auf Semaphore[(i+1)%NUMTHR] -> Nächster ist dran
+    //printf("Thread %ld signal auf sem%ld\n", i, (i+1) % NUMTHR);
+    sem_post(&thrsem[(i+1) % NUMTHR]);
   }
-
 
 }
 
@@ -65,25 +68,25 @@ int main(int argc, char const *argv[]) {
 
   //Initialisiere die Semaphoren , Argumente: Zeiger auf Semaphore,
   // shared=0 (nur im Prozess sichtbar), initvalue=1 (1 Proz. im krit. Ab.)
-  sem_init(&thrsem[0], 0, 1);
-  sem_init(&thrsem[1], 0, 1);
-  sem_init(&thrsem[2], 0, 1);
+  sem_init(&thrsem[0], 0, 1);   //Thread 0 als erster
+  sem_init(&thrsem[1], 0, 0);   //Dann Thread 1,  dann Thread 2, usw.
+  sem_init(&thrsem[2], 0, 0);
+  sem_init(&thrsem[3], 0, 0);
 
   //Starte 4 Threads
-  pthread_t thr[4];
-  for (long i = 0; i < 4; i++)
+  pthread_t thr[NUMTHR];
+  for (long i = 0; i < NUMTHR; i++)
     pthread_create(&thr[i], NULL, threadfunc, (void *)i);
 
 
   //Warte auf die Threads
-  for (long i = 0; i < 4; i++)
+  for (long i = 0; i < NUMTHR; i++)
     pthread_join(thr[i], NULL);
 
 
   //Ressourcen freigeben
-  sem_destroy(&thrsem[0]);
-  sem_destroy(&thrsem[1]);
-  sem_destroy(&thrsem[2]);
+  for (int i = 0; i < NUMTHR; i++)
+    sem_destroy(&thrsem[i]);
 
   //Output in
   printf("Globale Variable in=%lu\n", in);

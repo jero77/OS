@@ -1,4 +1,4 @@
-
+package aufgabe2;
 /*
   Diese Klasse zählt die gemeinsame Variable in mit der Methode increment() hoch
 */
