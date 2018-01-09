@@ -1,4 +1,4 @@
-main: aufgabe1 aufgabe3
+main: clean aufgabe1 aufgabe3
 
 aufgabe1: racecondition.c semaph.c condsynchr.c
 	gcc -pthread -o racecondition.out racecondition.c
@@ -10,3 +10,6 @@ aufgabe3: philosophers.c aufgabe3_2.c aufgabe3_3.c aufgabe3_4.c
 	gcc -pthread -o aufgabe3_2.out aufgabe3_2.c
 	gcc -pthread -o aufgabe3_3.out aufgabe3_3.c
 	gcc -pthread -o aufgabe3_4.out aufgabe3_4.c
+
+clean:
+	rm -f *.out
