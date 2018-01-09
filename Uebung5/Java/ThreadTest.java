@@ -13,7 +13,7 @@ public class ThreadTest {
   public static void main(String[] args) {
 
     //Anzahl Threads
-    int num = 4;
+    int num = 5;
 
     //Lies count_max als Kommandozeilenparameter
     if (args.length != 1) {
