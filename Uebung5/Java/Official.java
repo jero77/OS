@@ -1,3 +1,4 @@
+package aufgabe4;
 
 public class Official extends Thread {
 
@@ -30,7 +31,7 @@ public class Official extends Thread {
         System.out.println("ERROR: checked null");
         System.exit(-1);
       }
-      
+
     }
   }
 }

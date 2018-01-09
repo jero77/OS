@@ -1,4 +1,4 @@
-
+package aufgabe2;
 /*
   Diese Klasse erbt von Thread und erlaubt es mehrere Threads parallel zu
   starten, die auf die gemeinsame Variable in der Klasse Counter zugreifen.

@@ -1,4 +1,4 @@
-
+package aufgabe2;
 /*
   Testet die Klasse MyThread. Es werden mehrere Threads mit Race-Condition
   erzeugt. Synchronisation erfolgt über Monitore.
